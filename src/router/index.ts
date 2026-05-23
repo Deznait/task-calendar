@@ -6,6 +6,7 @@ import {
   createWebHistory,
 } from 'vue-router';
 import routes from './routes';
+import { authGuard } from './guards';
 
 /*
  * If not building with SSR mode, you can
@@ -33,5 +34,7 @@ export default defineRouter((/* { store, ssrContext } */) => {
     history: createHistory(process.env.VUE_ROUTER_BASE),
   });
 
+  Router.beforeEach(authGuard);
+  
   return Router;
 });

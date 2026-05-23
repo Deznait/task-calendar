@@ -8,6 +8,7 @@ export const useAuthStore = defineStore('auth', () => {
   const user = ref<User | null>(null);
   const profile = ref<Profile | null>(null);
   const loading = ref(false);
+  const initialized = ref(false);
 
   const isAuthenticated = computed(() => !!user.value);
 
@@ -17,6 +18,7 @@ export const useAuthStore = defineStore('auth', () => {
     } = await supabase.auth.getSession();
     user.value = session?.user ?? null;
     if (user.value) await fetchProfile();
+    initialized.value = true;
 
     supabase.auth.onAuthStateChange(async (_event, session) => {
       user.value = session?.user ?? null;
@@ -65,6 +67,7 @@ export const useAuthStore = defineStore('auth', () => {
     user,
     profile,
     loading,
+    initialized,
     isAuthenticated,
     init,
     signInWithEmail,
